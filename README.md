@@ -106,40 +106,41 @@ result = mri_swarm(
 )
 ```
 
-## 📝 Example Output
-
-```python
-{
-    "findings": {
-        "anatomical": "Normal brain structure with mild cortical atrophy",
-        "pathological": "Multiple T2 hyperintense lesions in periventricular region",
-        "sequence": "FLAIR sequence shows clear lesion definition",
-        "quantitative": "Total lesion volume: 3.2cm³",
-        "clinical": "Findings consistent with relapsing-remitting MS",
-        "quality": "Good image quality, no significant artifacts"
-    },
-    "diagnoses": [
-        {
-            "condition": "Multiple Sclerosis",
-            "likelihood": "High",
-            "evidence": "Multiple periventricular lesions, typical distribution"
-        },
-        {
-            "condition": "Small Vessel Disease",
-            "likelihood": "Low",
-            "evidence": "Pattern and patient age not typical"
-        }
-    ],
-    "recommendations": [
-        "Follow-up scan in 6 months",
-        "Consider contrast-enhanced study"
-    ]
-}
-```
-
 ## 🔄 Workflow Diagram
 
-[Mermaid diagram will be displayed here showing the architecture]
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant S as MRI Swarm
+    participant G as Group Chat
+    participant AA as Anatomical Agent
+    participant PA as Pathology Agent
+    participant SA as Sequence Agent
+    participant QA as Quantitative Agent
+    participant CA as Clinical Agent
+    participant QC as Quality Agent
+    participant Sum as Summary Agent
+
+    U->>S: Submit MRI Analysis Task
+    S->>G: Initialize Group Chat
+    par Parallel Analysis
+        G->>AA: Analyze Anatomical Structures
+        G->>PA: Detect Pathologies
+        G->>SA: Analyze MRI Sequences
+        G->>QA: Perform Quantitative Analysis
+        G->>CA: Clinical Correlation
+        G->>QC: Quality Assessment
+    end
+    AA-->>G: Anatomical Findings
+    PA-->>G: Pathological Findings
+    SA-->>G: Sequence Analysis
+    QA-->>G: Quantitative Results
+    CA-->>G: Clinical Insights
+    QC-->>G: Quality Report
+    G->>Sum: Collaborative Findings
+    Sum->>S: Generate Summary
+    S->>U: Return Comprehensive Report
+```
 
 ## 📄 License
 
