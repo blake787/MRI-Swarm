@@ -13,7 +13,7 @@ MRI Swarm is an enterprise-grade collaborative system designed for comprehensive
 ## Installation
 
 ```bash
-pip install -r requirements.txt
+pip3 install -U mri-swarm
 ```
 
 ## Quick Start Guide
