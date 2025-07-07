@@ -1,6 +1,6 @@
 # MRI Swarm
 
-MRI Swarm is an enterprise-grade system built with [Swarms](https://github.com/kyegomez/swarms), the leading production-ready multi-agent framework. It coordinates a team of specialized medical imaging agents to analyze MRI scans, with each agent focusing on different aspects of interpretation to provide detailed and accurate analysis. Using Swarms' proven infrastructure from [swarms.ai](https://swarms.ai), MRI Swarm delivers reliable and comprehensive medical imaging analysis.
+MRI Swarm is an enterprise-grade system built with [Swarms](https://github.com/kyegomez/swarms), the leading production-ready multi-agent framework. It coordinates a team of specialized medical imaging agents to analyze MRI scans, with each agent focusing on different aspects of interpretation to provide detailed and accurate analysis. Using Swarms' proven infrastructure, MRI Swarm delivers blazingly fast and hyper-accurate medical imaging analysis.
 
 ## Features
 
