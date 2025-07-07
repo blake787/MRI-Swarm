@@ -6,6 +6,7 @@ from loguru import logger
 
 from mri_swarm.mri_agents import mri_swarm
 
+
 def evaluate_mri_swarm():
     """
     Evaluate the MRI-Swarm system on the brain tumor MRI dataset.
@@ -24,7 +25,7 @@ def evaluate_mri_swarm():
     logger.info("Beginning evaluation loop...")
     for idx, sample in enumerate(tqdm(ds["train"])):
         logger.debug(f"Processing sample {idx + 1}/{len(ds['train'])}")
-        
+
         # Get image and true label
         image = sample["image"]
         label = sample["label"]

@@ -1,6 +1,8 @@
+import datetime
+import uuid
 from loguru import logger
-from typing import List
-from swarms import Agent, InteractiveGroupChat
+from typing import List, Optional
+from swarms import Agent, InteractiveGroupChat, count_tokens
 from swarms.prompts.ag_prompt import aggregator_system_prompt_main
 from mri_swarm.prompts import GROUPCHAT_INITIATE_PROMPT
 
@@ -210,7 +212,6 @@ summary_agent = Agent(
 # List of all agents for easy access
 mri_agents = [
     anatomical_agent,
-    pathology_agent,
     sequence_agent,
     quantitative_agent,
     clinical_agent,
@@ -260,8 +261,10 @@ def groupchat_mri_analysis(task: str, img: str = None, imgs: List[str] = None):
 
 def mri_swarm(
     task: str,
+    additional_patient_info: Optional[str] = None,
     img: str = None,
     imgs: List[str] = None,
+    return_log: bool = False,
 ):
     """
     Perform comprehensive MRI analysis with collaborative agent discussion and summary.
@@ -313,14 +316,107 @@ def mri_swarm(
         ensuring diverse perspectives are captured in the analysis.
     """
     logger.info(f"Running MRI-Swarm analysis with task: {task}")
+
     groupchat_analysis = groupchat_mri_analysis(
-        task=f"{GROUPCHAT_INITIATE_PROMPT}\n\n{task}", img=img, imgs=imgs
+        task=f"{GROUPCHAT_INITIATE_PROMPT}\n\nMain task: {task}\n\nPatient info: {additional_patient_info}",
+        img=img,
+        imgs=imgs,
     )
 
     logger.info("Main diaganosis analysis is complete, now generating summary")
-    
+
     summary = summary_agent.run(
         f"Summarize the following MRI analysis: {groupchat_analysis} by your team of agents and provide a concise and detailed report of the findings, along with an array of potential diagnoses including the likelihood of each diagnosis and the rationale with supporting evidence for each diagnosis."
     )
-    
-    return summary
+
+    if return_log:
+        return {
+            "id": str(uuid.uuid4()),
+            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "task": task,
+            "number_of_agents": len(mri_agents) + 1,
+            "groupchat_analysis": groupchat_analysis,
+            "summary": summary,
+            "tokens_used": count_tokens(groupchat_analysis) + count_tokens(summary),
+        }
+    else:
+        return summary
+
+
+def batched_mri_swarm(
+    tasks: List[str],
+    patient_infos: List[str],
+    imgs: List[str],
+    return_log: bool = True,
+):
+    """
+    Perform batch MRI analysis with collaborative agent discussion and summary.
+
+    This function processes multiple MRI analysis tasks in sequence, applying the same
+    collaborative swarm intelligence approach used in the single analysis function.
+    Each task is processed independently with its corresponding patient information
+    and image, allowing for efficient batch processing of multiple cases.
+
+    Args:
+        tasks (List[str]): List of analysis tasks or clinical questions for each case.
+                          Each task should be a clear, specific instruction for MRI analysis.
+        patient_infos (List[str]): List of patient information strings corresponding to each task.
+                                  Can include age, medical history, symptoms, or other relevant details.
+        imgs (List[str]): List of image file paths or URLs corresponding to each task.
+                         Each image should be a valid MRI scan in supported format.
+        return_log (bool, optional): If True, returns detailed analysis logs including
+                                   agent interactions, token usage, and timestamps.
+                                   If False, returns only the final summary for each case.
+                                   Defaults to False.
+
+    Returns:
+        List[Union[str, Dict]]: List of analysis results, where each result corresponds
+                               to one task. If return_log is True, each result is a dictionary
+                               containing detailed analysis information. If return_log is False,
+                               each result is a string containing the analysis summary.
+
+    Raises:
+        ValueError: If the lengths of tasks, patient_infos, and imgs lists are not equal
+        AgentNotFoundError: If any of the required MRI agents are not available
+        InvalidTaskFormatError: If any task format is invalid or unclear
+        NoMentionedAgentsError: If no agents are mentioned in any task
+
+    Example:
+        >>> tasks = [
+        ...     "Analyze this brain MRI for signs of multiple sclerosis",
+        ...     "Evaluate this spine MRI for disc herniation"
+        ... ]
+        >>> patient_infos = [
+        ...     "Patient age: 35, symptoms: vision problems, fatigue",
+        ...     "Patient age: 45, symptoms: lower back pain, radiating to leg"
+        ... ]
+        >>> imgs = ["patient_001_brain.jpg", "patient_002_spine.jpg"]
+        >>> results = batched_mri_swarm(tasks, patient_infos, imgs)
+        >>> for i, result in enumerate(results):
+        ...     print(f"Case {i+1}: {result}")
+        # Output: List of analysis summaries for each case
+
+    Note:
+        - All input lists must have the same length
+        - Each case is processed sequentially, not in parallel
+        - The function maintains the same quality and depth of analysis as single cases
+        - Processing time scales linearly with the number of cases
+    """
+    # Validate input list lengths
+    if not (len(tasks) == len(patient_infos) == len(imgs)):
+        raise ValueError(
+            "All input lists (tasks, patient_infos, imgs) must have the same length"
+        )
+
+    results = []
+    for task, patient_info, img in zip(tasks, patient_infos, imgs):
+        results.append(
+            mri_swarm(
+                task=task,
+                additional_patient_info=patient_info,
+                img=img,
+                return_log=return_log,
+            )
+        )
+
+    return results

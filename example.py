@@ -7,7 +7,8 @@ load_dotenv()
 
 result = mri_swarm(
     task="@MRI-Clinical-Correlation-Agent Analyze this brain MRI for any abnormalities",
-    img="test.webp",
+    img="images/test.webp",
+    return_log=True,
 )
 
 print(result)
