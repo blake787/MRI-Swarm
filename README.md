@@ -1,79 +1,40 @@
-# MRI-Swarm
+# MRI Swarm
 
-A powerful MRI analysis system using swarm intelligence and specialized agents.
+MRI Swarm is an enterprise-grade collaborative system designed for comprehensive MRI scan analysis. It leverages a distributed network of specialized medical imaging agents, each focusing on different aspects of MRI interpretation, to provide detailed and accurate analysis of medical imaging data.
 
 ## Features
 
-- Collaborative AI agents for comprehensive MRI analysis
-- Multiple specialized agents (anatomical, pathological, sequence, etc.)
-- Support for single and batch image processing
-- Production-ready REST API
-- Docker support for easy deployment
+- **Multi-Agent Distributed Analysis**: Six specialized medical imaging agents working in coordination
+- **Comprehensive Diagnostic Analysis**: From detailed anatomical structure to clinical correlation
+- **Advanced Quality Assurance**: Integrated quality assessment and artifact detection protocols
+- **Automated Clinical Reporting**: Generates detailed medical summaries with diagnostic insights
+- **Flexible Input Processing**: Supports single and multiple MRI sequence analysis
 
-## Documentation
+## Installation
 
-- [API Documentation](docs/api.md) - Comprehensive guide for using the MRI-Swarm API
-- [Installation Guide](docs/installation.md) - Instructions for setting up MRI-Swarm
-- [Development Guide](docs/development.md) - Guide for developers contributing to MRI-Swarm
-
-## Quick Start
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/MRI-Swarm.git
-cd MRI-Swarm
-```
-
-2. Set up environment variables:
-```bash
-# Copy the example env file
-cp env.example .env
-
-# Edit the .env file with your settings
-# REQUIRED: Add your Anthropic API key
-ANTHROPIC_API_KEY=your_key_here
-```
-
-3. Run with Docker:
-```bash
-# Build the image
-docker build -t mri-swarm .
-
-# Run with environment variables
-docker run -p 8000:8000 \
-  --env-file .env \
-  -v $(pwd)/logs:/app/logs \
-  -v $(pwd)/uploads:/app/uploads \
-  mri-swarm
-```
-
-Or run locally:
 ```bash
 pip install -r requirements.txt
-export ANTHROPIC_API_KEY=your_key_here
-python -m uvicorn api:app --host 0.0.0.0 --port 8000
 ```
 
-## Environment Variables
+## Quick Start Guide
 
-Required:
-- `ANTHROPIC_API_KEY`: Your Anthropic API key for Claude
+```python
+from mri_swarm import mri_swarm
 
-Optional:
-- `PORT`: Server port (default: 8000)
-- `HOST`: Server host (default: 0.0.0.0)
-- `WORKERS`: Number of Gunicorn workers (default: 4)
-- `ENVIRONMENT`: development or production (default: production)
-- `LOG_LEVEL`: Logging level (default: info)
-- `CORS_ORIGINS`: List of allowed CORS origins
+# Analyze a single MRI scan
+result = mri_swarm(
+    task="Analyze this brain MRI for signs of multiple sclerosis",
+    img="path/to/brain_mri.jpg"
+)
+print(result)
 
-## License
-
-This project is licensed under the terms of the LICENSE file included in the repository.
-
-## Contributing
-
-We welcome contributions from the medical imaging and software development community. Please submit pull requests following our contribution guidelines.
+# Analyze multiple MRI scans
+results = mri_swarm(
+    task="Compare these brain MRIs for progression of tumor",
+    imgs=["scan1.jpg", "scan2.jpg"]
+)
+print(results)
+```
 
 ## Agent Architecture
 
@@ -181,14 +142,18 @@ sequenceDiagram
     S->>U: Return Diagnostic Analysis
 ```
 
-## API Usage
+## License
 
-[Learn more here on how to run the API with fastapi and gunicorn](./docs/api.md)
+This project is licensed under the terms specified in the LICENSE file included in the repository.
 
-### Production Deployment Notes
+## API File
 
-1. Configure CORS appropriately in `api.py`
-2. Set up SSL certificates
-3. Configure appropriate user/group in `gunicorn_config.py`
-4. Set up proper logging rotation
-5. Use environment variables for sensitive configuration
+[Learn how to setup an API for MRI Swarm](./docs/api.md)
+
+## Docker Setup
+
+[Learn how to run MRI Swarm using Docker](./docs/docker.md)
+
+## Contributing
+
+We welcome contributions from the medical imaging and software development community. Please submit pull requests following our contribution guidelines.
