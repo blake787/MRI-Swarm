@@ -1,6 +1,6 @@
 # MRI Swarm
 
-MRI Swarm is an enterprise-grade collaborative system designed for comprehensive MRI scan analysis. It leverages a distributed network of specialized medical imaging agents, each focusing on different aspects of MRI interpretation, to provide detailed and accurate analysis of medical imaging data.
+MRI Swarm is an enterprise-grade system built with [Swarms](https://github.com/kyegomez/swarms), the leading production-ready multi-agent framework. It coordinates a team of specialized medical imaging agents to analyze MRI scans, with each agent focusing on different aspects of interpretation to provide detailed and accurate analysis. Using Swarms' proven infrastructure from [swarms.ai](https://swarms.ai), MRI Swarm delivers reliable and comprehensive medical imaging analysis.
 
 ## Features
 
@@ -150,6 +150,38 @@ sequenceDiagram
 ## Docker Setup
 
 [Learn how to run MRI Swarm using Docker](./docs/docker.md)
+
+
+## Connect With Us
+
+Join the [swarms](https://swarms.ai) community of agent engineers and researchers for technical support, cutting-edge updates, and exclusive access to world-class agent engineering insights!
+
+| Platform | Description | Link |
+|----------|-------------|------|
+| 📚 Documentation | Official documentation and guides | [docs.swarms.world](https://docs.swarms.world) |
+| 📝 Blog | Latest updates and technical articles | [Medium](https://medium.com/@kyeg) |
+| 💬 Discord | Live chat and community support | [Join Discord](https://discord.gg/jM3Z6M9uMq) |
+| 🐦 Twitter | Latest news and announcements | [@kyegomez](https://twitter.com/kyegomez) |
+| 👥 LinkedIn | Professional network and updates | [The Swarm Corporation](https://www.linkedin.com/company/the-swarm-corporation) |
+| 📺 YouTube | Tutorials and demos | [Swarms Channel](https://www.youtube.com/channel/UC9yXyitkbU_WSy7bd_41SqQ) |
+| 🎫 Events | Join our community events | [Sign up here](https://lu.ma/5p2jnc2v) |
+| 🚀 Onboarding Session | Get onboarded with Kye Gomez, creator and lead maintainer of Swarms | [Book Session](https://cal.com/swarms/swarms-onboarding-session) |
+
+------
+
+## Citation
+
+If you use **MRI Swarm** in your research, please cite the projext with 
+
+```bibtex
+@misc{SWARMS_2022,
+  author  = {The Swarms Corporationn},
+  title   = {{MRI Swarm: Fast, Scalable, and Accurate MRI Analysis with Multi-Agent Collaboration}},
+  year    = {2022},
+  howpublished = {\url{https://github.com/The-Swarm-Corporation/MRI-Swarm}},
+  version = {latest}
+}
+```
 
 ## Contributing
 
