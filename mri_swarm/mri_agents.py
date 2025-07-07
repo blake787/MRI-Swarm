@@ -1,3 +1,4 @@
+from loguru import logger
 from typing import List
 from swarms import Agent, InteractiveGroupChat
 from swarms.prompts.ag_prompt import aggregator_system_prompt_main
@@ -311,10 +312,15 @@ def mri_swarm(
         The function uses a random speaker function for agent interaction,
         ensuring diverse perspectives are captured in the analysis.
     """
+    logger.info(f"Running MRI-Swarm analysis with task: {task}")
     groupchat_analysis = groupchat_mri_analysis(
         task=f"{GROUPCHAT_INITIATE_PROMPT}\n\n{task}", img=img, imgs=imgs
     )
+
+    logger.info("Main diaganosis analysis is complete, now generating summary")
+    
     summary = summary_agent.run(
         f"Summarize the following MRI analysis: {groupchat_analysis} by your team of agents and provide a concise and detailed report of the findings, along with an array of potential diagnoses including the likelihood of each diagnosis and the rationale with supporting evidence for each diagnosis."
     )
+    
     return summary

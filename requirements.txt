@@ -1,2 +1,6 @@
 swarms
 loguru
+datasets
+scikit-learn
+pandas
+tqdm
