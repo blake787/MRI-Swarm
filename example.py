@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from mri_swarm.mri_agents import mri_swarm
+from mri_swarm.main import mri_swarm
 
 
 load_dotenv()

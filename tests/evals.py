@@ -4,7 +4,7 @@ from sklearn.metrics import accuracy_score, classification_report
 from tqdm import tqdm
 from loguru import logger
 
-from mri_swarm.mri_agents import mri_swarm
+from mri_swarm.main import mri_swarm
 
 
 def evaluate_mri_swarm():

@@ -19,7 +19,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
-from mri_swarm.mri_agents import mri_swarm, batched_mri_swarm
+from mri_swarm.main import mri_swarm, batched_mri_swarm
 from loguru import logger
 
 # Create upload directory
@@ -56,8 +56,13 @@ class ErrorResponse(BaseModel):
 
 
 class BatchMRIRequest(BaseModel):
-    tasks: List[str] = Field(..., description="List of analysis tasks or clinical questions for each case")
-    patient_infos: List[str] = Field(..., description="List of patient information strings corresponding to each task")
+    tasks: List[str] = Field(
+        ..., description="List of analysis tasks or clinical questions for each case"
+    )
+    patient_infos: List[str] = Field(
+        ...,
+        description="List of patient information strings corresponding to each task",
+    )
 
 
 async def save_upload_file(upload_file: UploadFile) -> Path:
@@ -196,12 +201,12 @@ async def analyze_batch_images(
 ):
     """
     Analyze multiple MRI images in batch mode.
-    
+
     Parameters:
     - tasks: List of analysis tasks or clinical questions for each case
     - patient_infos: List of patient information strings corresponding to each task
     - images: List of MRI image files corresponding to each task
-    
+
     Returns:
     - List of analysis results, one for each case
     """
@@ -210,23 +215,22 @@ async def analyze_batch_images(
         if not (len(request.tasks) == len(request.patient_infos) == len(images)):
             raise HTTPException(
                 status_code=400,
-                detail="Number of tasks, patient infos, and images must match"
+                detail="Number of tasks, patient infos, and images must match",
             )
-        
+
         # Validate file types and save files
         file_paths = []
         for image in images:
             if not image.content_type.startswith("image/"):
                 raise HTTPException(
-                    status_code=400,
-                    detail=f"File {image.filename} must be an image"
+                    status_code=400, detail=f"File {image.filename} must be an image"
                 )
             file_path = await save_upload_file(image)
             file_paths.append(file_path)
-        
+
         # Add cleanup task
         background_tasks.add_task(cleanup_files, file_paths)
-        
+
         # Run batch analysis
         results = batched_mri_swarm(
             tasks=request.tasks,
@@ -234,9 +238,9 @@ async def analyze_batch_images(
             imgs=[str(path) for path in file_paths],
             return_log=True,
         )
-        
+
         return results
-        
+
     except ValueError as e:
         logger.error(f"Validation error in batch request: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))

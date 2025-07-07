@@ -142,9 +142,6 @@ sequenceDiagram
     S->>U: Return Diagnostic Analysis
 ```
 
-## License
-
-This project is licensed under the terms specified in the LICENSE file included in the repository.
 
 ## API File
 
@@ -157,3 +154,13 @@ This project is licensed under the terms specified in the LICENSE file included 
 ## Contributing
 
 We welcome contributions from the medical imaging and software development community. Please submit pull requests following our contribution guidelines.
+
+## Todo
+
+- [ ] Implement the ability to create detailed documents on the patient like a real-life MRI scan
+- [ ] Implement unit tests for the main file
+- [ ] Implement unit tests for the api
+
+## License
+
+This project is licensed under the terms specified in the LICENSE file included in the repository.
